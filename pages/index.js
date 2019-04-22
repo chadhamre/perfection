@@ -1,52 +1,75 @@
-import { EmptyState, Layout, Page, ResourcePicker } from "@shopify/polaris";
-import store from "store-js";
-import ResourceListWithProducts from "../components/ResourceList";
+import {
+  Button,
+  Card,
+  Form,
+  FormLayout,
+  Layout,
+  Page,
+  SettingToggle,
+  Stack,
+  TextField,
+  TextStyle
+} from "@shopify/polaris";
 
-const img = "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg";
-
-class Index extends React.Component {
-  state = { open: false };
+class AnnotatedLayout extends React.Component {
+  state = {
+    find: "",
+    replace: ""
+  };
 
   render() {
-    const emptyState = !store.get("ids");
+    const { find, replace } = this.state;
+
     return (
-      <Page
-        primaryAction={{
-          content: "Select products",
-          onAction: () => this.setState({ open: true })
-        }}
-      >
-        <ResourcePicker
-          resourceType="Product"
-          showVariants={false}
-          open={this.state.open}
-          onSelection={resources => this.handleSelection(resources)}
-          onCancel={() => this.setState({ open: false })}
-        />
-        {emptyState ? (
-          <Layout>
-            <EmptyState
-              heading="Select products to start"
-              action={{
-                content: "Select products",
-                onAction: () => this.setState({ open: true })
-              }}
-              image={img}
-            >
-              <p>Select products and change their price temporarily</p>
-            </EmptyState>
-          </Layout>
-        ) : (
-          <ResourceListWithProducts />
-        )}
+      <Page>
+        <Layout.Section>
+          <Layout.AnnotatedSection
+            title="Find & Replace"
+            description="Search product descriptions."
+          >
+            <Card sectioned>
+              <Form onSubmit={this.handleSubmit}>
+                <FormLayout>
+                  <FormLayout.Group>
+                    <TextField
+                      value={find}
+                      onChange={this.handleChange("find")}
+                      label="Find"
+                      type="find"
+                    />
+                    <TextField
+                      value={replace}
+                      onChange={this.handleChange("replace")}
+                      label="Replace"
+                      type="replace"
+                    />
+                  </FormLayout.Group>
+                  <Button primary submit>
+                    Find
+                  </Button>
+                </FormLayout>
+              </Form>
+            </Card>
+          </Layout.AnnotatedSection>
+        </Layout.Section>
       </Page>
     );
   }
-  handleSelection = resources => {
-    const idsFromResources = resources.selection.map(product => product.id);
-    this.setState({ open: false });
-    store.set("ids", idsFromResources);
+  handleSubmit = () => {
+    this.setState({
+      find: this.state.find,
+      replace: this.state.replace
+    });
+    console.log("submission", this.state);
+  };
+  handleChange = field => {
+    return value => this.setState({ [field]: value });
+  };
+  handleToggle = () => {
+    this.setState(({ enabled }) => {
+      return { enabled: !enabled };
+    });
   };
 }
 
-export default Index;
+export default AnnotatedLayout;

@@ -21,7 +21,7 @@ class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <title>Catalog Sync for Square</title>
+          <title>Find & Replace</title>
           <meta charSet="utf-8" />
         </Head>
         <AppProvider
