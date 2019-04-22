@@ -1,0 +1,32 @@
+{
+  "name": "shopify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@shopify/koa-shopify-auth": "^3.1.22",
+    "@shopify/koa-shopify-graphql-proxy": "2.1.5",
+    "@shopify/koa-shopify-webhooks": "^1.1.6",
+    "@shopify/polaris": "^3.12.0",
+    "@zeit/next-css": "^1.0.1",
+    "apollo-boost": "^0.3.1",
+    "dotenv": "^7.0.0",
+    "graphql": "^14.2.1",
+    "isomorphic-fetch": "^2.2.1",
+    "js-cookie": "^2.2.0",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.10.1",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-apollo": "^2.5.4",
+    "react-dom": "^16.8.6",
+    "store-js": "^2.0.4"
+  }
+}
