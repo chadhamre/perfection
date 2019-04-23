@@ -1,23 +1,10 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import {
-  Button,
-  Card,
-  Form,
-  FormLayout,
-  Layout,
-  Page,
-  SettingToggle,
-  Stack,
-  TextField,
-  TextStyle,
-  Heading
-} from "@shopify/polaris";
-import ProductQuery from "./../components/ProductQuery";
+import { Page } from "@shopify/polaris";
 
 const GET_PRODUCTS = gql`
-  query getProducts {
-    products(first: 2) {
+  query getProducts($cursor: String) {
+    products(first: 1, after: $cursor) {
       pageInfo {
         hasNextPage
       }
@@ -33,7 +20,7 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-class AnnotatedLayout extends React.Component {
+class Index extends React.Component {
   state = {
     products: []
   };
@@ -42,31 +29,35 @@ class AnnotatedLayout extends React.Component {
     return (
       <Page>
         <Query query={GET_PRODUCTS}>
-          {({ data, loading, error }) => {
-            if (loading) return <div>loading products to memory</div>;
+          {({ data, loading, error, fetchMore }) => {
+            <getProducts
+              onLoadMore={() => {
+                console.log("LOAD MORE");
+                fetchMore({
+                  variables: {
+                    cursor: data.products.edges[0].cursor
+                  },
+                  updateQuery: (previousResult, { fetchMoreResult }) => {
+                    console.log("FETCH MORE RESULTS", fetchMoreResult);
+                    if (fetchMoreResult.products.edges.length) {
+                      return [
+                        ...previousResult.products.edges,
+                        ...fetchMoreResults.products.edges
+                      ];
+                    }
+                    return previousResult.products.edges;
+                  }
+                });
+              }}
+            />;
+            if (loading) return <div>loading products to memory...</div>;
             if (error) return <div>{error.message}</div>;
-            console.log(data);
             return <div>success!</div>;
           }}
         </Query>
       </Page>
     );
   }
-  handleSubmit = () => {
-    this.setState({
-      find: this.state.find,
-      replace: this.state.replace
-    });
-    console.log("submission", this.state);
-  };
-  handleChange = field => {
-    return value => this.setState({ [field]: value });
-  };
-  handleToggle = () => {
-    this.setState(({ enabled }) => {
-      return { enabled: !enabled };
-    });
-  };
 }
 
-export default AnnotatedLayout;
+export default Index;
