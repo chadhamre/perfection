@@ -13,11 +13,16 @@ import * as PropTypes from "prop-types";
 
 const GET_PRODUCTS_BY_DESCRIPTION_QUERY = gql`
   query Product($find: String!) {
-    products(query: $find, first: 5) {
+    products(first: 5) {
+      pageInfo {
+        hasNextPage
+      }
       edges {
+        cursor
         node {
           id
           title
+          descriptionHtml
         }
       }
     }
@@ -41,8 +46,6 @@ class ResourceListWithProducts extends React.Component {
         {({ data, loading, error }) => {
           if (loading) return <div>Loading…</div>;
           if (error) return <div>{error.message}</div>;
-          console.log(data);
-
           return (
             <Card sectioned>
               <ResourceList
@@ -50,13 +53,12 @@ class ResourceListWithProducts extends React.Component {
                 resourceName={{ singular: "Product", plural: "Products" }}
                 items={data.products.edges}
                 renderItem={item => {
-                  console.log(item);
                   return (
                     <ResourceList.Item
                       id={item.node.id}
                       accessibilityLabel={`View details for ${item.title}`}
                     >
-                      <Stack>
+                      <Stack vertical>
                         <Stack.Item fill>
                           <h3>
                             <TextStyle variation="strong">
@@ -64,6 +66,7 @@ class ResourceListWithProducts extends React.Component {
                             </TextStyle>
                           </h3>
                         </Stack.Item>
+                        <Stack.Item fill>{item.node.description}</Stack.Item>
                       </Stack>
                     </ResourceList.Item>
                   );
