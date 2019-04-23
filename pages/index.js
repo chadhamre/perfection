@@ -1,3 +1,5 @@
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
 import {
   Button,
   Card,
@@ -13,48 +15,40 @@ import {
 } from "@shopify/polaris";
 import ProductQuery from "./../components/ProductQuery";
 
+const GET_PRODUCTS = gql`
+  query getProducts {
+    products(first: 2) {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          title
+          descriptionHtml
+        }
+        cursor
+      }
+    }
+  }
+`;
+
 class AnnotatedLayout extends React.Component {
   state = {
-    find: "",
-    replace: ""
+    products: []
   };
 
   render() {
-    const { find, replace } = this.state;
-
     return (
       <Page>
-        <Layout.Section>
-          <Layout.AnnotatedSection
-            title="Find & Replace"
-            description="Search product descriptions."
-          >
-            <Card sectioned>
-              <Form onSubmit={this.handleSubmit}>
-                <FormLayout>
-                  <FormLayout.Group>
-                    <TextField
-                      value={find}
-                      onChange={this.handleChange("find")}
-                      label="Find"
-                      type="find"
-                    />
-                    <TextField
-                      value={replace}
-                      onChange={this.handleChange("replace")}
-                      label="Replace"
-                      type="replace"
-                    />
-                  </FormLayout.Group>
-                  <Button primary submit>
-                    Find
-                  </Button>
-                </FormLayout>
-              </Form>
-            </Card>
-          </Layout.AnnotatedSection>
-        </Layout.Section>
-        {this.state.find ? <ProductQuery find={this.state.find} /> : null}
+        <Query query={GET_PRODUCTS}>
+          {({ data, loading, error }) => {
+            if (loading) return <div>loading products to memory</div>;
+            if (error) return <div>{error.message}</div>;
+            console.log(data);
+            return <div>success!</div>;
+          }}
+        </Query>
       </Page>
     );
   }
