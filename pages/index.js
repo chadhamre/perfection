@@ -8,8 +8,10 @@ import {
   SettingToggle,
   Stack,
   TextField,
-  TextStyle
+  TextStyle,
+  Heading
 } from "@shopify/polaris";
+import ProductQuery from "./../components/ProductQuery";
 
 class AnnotatedLayout extends React.Component {
   state = {
@@ -52,6 +54,7 @@ class AnnotatedLayout extends React.Component {
             </Card>
           </Layout.AnnotatedSection>
         </Layout.Section>
+        {this.state.find ? <ProductQuery find={this.state.find} /> : null}
       </Page>
     );
   }
