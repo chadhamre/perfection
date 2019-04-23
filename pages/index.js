@@ -14,6 +14,7 @@ import {
   Heading
 } from "@shopify/polaris";
 import { ApolloConsumer } from "react-apollo";
+import store from "store-js";
 
 class Index extends React.Component {
   state = {
@@ -61,8 +62,11 @@ class Index extends React.Component {
   };
 
   render() {
+    const accessToken = store.get("accessToken");
+    console.log("AT", accessToken);
     return (
-      <ApolloConsumer>{client => this.fetchProducts(client)}</ApolloConsumer>
+      // <ApolloConsumer>{client => this.fetchProducts(client)}</ApolloConsumer>
+      <div>Access Granted</div>
     );
   }
 }
