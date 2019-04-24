@@ -1,10 +1,11 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { Page } from "@shopify/polaris";
+import { Next } from "./../components/Next";
 
 const GET_PRODUCTS = gql`
   query getProducts($cursor: String) {
-    products(first: 5, after: $cursor) {
+    products(first: 6, after: $cursor) {
       pageInfo {
         hasNextPage
       }
@@ -28,18 +29,20 @@ class Index extends React.Component {
   render() {
     return (
       <Page>
-        <Query query={GET_PRODUCTS}>
+        <Query query={GET_PRODUCTS} notifyOnNetworkStatusChange={true}>
           {({ data, loading, error, fetchMore }) => {
+            console.log(loading);
             if (loading) return <div>loading products to memory...</div>;
             if (error) return <div>{error.message}</div>;
-            if (data.products.pageInfo.hasNextPage) {
+            if (data.products.pageInfo.hasNextPage)
               fetchMore({
                 variables: {
                   cursor:
                     data.products.edges[data.products.edges.length - 1].cursor
                 },
                 updateQuery: (previousResult, { fetchMoreResult }) => {
-                  let combinedData = {
+                  if (!fetchMoreResult) return previousResult;
+                  return {
                     products: {
                       pageInfo: { ...fetchMoreResult.products.pageInfo },
                       edges: [
@@ -49,12 +52,11 @@ class Index extends React.Component {
                       __typename: fetchMoreResult.products.__typename
                     }
                   };
-                  return combinedData;
                 }
               });
-            }
-            console.log("HERE", data);
-            return <div>{JSON.stringify(data)}</div>;
+
+            console.log("DATA", data.products.edges);
+            return <div>Done</div>;
           }}
         </Query>
       </Page>
