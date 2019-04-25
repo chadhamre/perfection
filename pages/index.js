@@ -1,7 +1,14 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Page } from "@shopify/polaris";
-import { Next } from "./../components/Next";
+import {
+  Page,
+  Spinner,
+  Layout,
+  Stack,
+  Heading,
+  TextStyle
+} from "@shopify/polaris";
+import { Find } from "./../components/Find";
 
 const GET_PRODUCTS = gql`
   query getProducts($cursor: String) {
@@ -28,37 +35,62 @@ class Index extends React.Component {
 
   render() {
     return (
-      <Page>
-        <Query query={GET_PRODUCTS} notifyOnNetworkStatusChange={true}>
-          {({ data, loading, error, fetchMore }) => {
-            console.log(loading);
-            if (loading) return <div>loading products to memory...</div>;
-            if (error) return <div>{error.message}</div>;
-            if (data.products.pageInfo.hasNextPage)
-              fetchMore({
-                variables: {
-                  cursor:
-                    data.products.edges[data.products.edges.length - 1].cursor
-                },
-                updateQuery: (previousResult, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) return previousResult;
-                  return {
-                    products: {
-                      pageInfo: { ...fetchMoreResult.products.pageInfo },
-                      edges: [
-                        ...previousResult.products.edges,
-                        ...fetchMoreResult.products.edges
-                      ],
-                      __typename: fetchMoreResult.products.__typename
-                    }
-                  };
-                }
-              });
+      <Page fullWidth>
+        <Layout>
+          <Layout.Section>
+            <Query query={GET_PRODUCTS}>
+              {({ data, loading, error, fetchMore }) => {
+                if (loading)
+                  return (
+                    <Stack alignment="center">
+                      <Stack.Item>
+                        <Spinner />
+                      </Stack.Item>
+                      <Stack.Item>
+                        <TextStyle>loading products to memory...</TextStyle>
+                      </Stack.Item>
+                    </Stack>
+                  );
+                if (error) return <div>{error.message}</div>;
 
-            console.log("DATA", data.products.edges);
-            return <div>Done</div>;
-          }}
-        </Query>
+                if (data.products.pageInfo.hasNextPage)
+                  fetchMore({
+                    variables: {
+                      cursor:
+                        data.products.edges[data.products.edges.length - 1]
+                          .cursor
+                    },
+                    updateQuery: (previousResult, { fetchMoreResult }) => {
+                      return {
+                        products: {
+                          pageInfo: { ...fetchMoreResult.products.pageInfo },
+                          edges: [
+                            ...previousResult.products.edges,
+                            ...fetchMoreResult.products.edges
+                          ],
+                          __typename: fetchMoreResult.products.__typename
+                        }
+                      };
+                    }
+                  });
+
+                if (!data.products.pageInfo.hasNextPage) {
+                  return <Find products={data.products.edges}>Done</Find>;
+                }
+                return (
+                  <Stack alignment="center">
+                    <Stack.Item>
+                      <Spinner />
+                    </Stack.Item>
+                    <Stack.Item>
+                      <TextStyle>loading products to memory...</TextStyle>
+                    </Stack.Item>
+                  </Stack>
+                );
+              }}
+            </Query>
+          </Layout.Section>
+        </Layout>
       </Page>
     );
   }
