@@ -114,11 +114,7 @@ export class Find extends Component {
                                 <TextStyle variation="positive">
                                   After
                                 </TextStyle>
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: item.node.descriptionHtmlHighlight
-                                  }}
-                                />
+                                <div>{item.node.descriptionHtmlHighlight}</div>
                               </div>
                             </Layout.Section>
                           </Layout>
