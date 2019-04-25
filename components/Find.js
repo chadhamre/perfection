@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Button,
   ButtonGroup,
@@ -13,10 +13,10 @@ import {
   TextStyle,
   Heading,
   ResourceList,
-  Fragment,
   Tag
 } from "@shopify/polaris";
 import Apply from "./Apply";
+import "./Find.css";
 
 export class Find extends Component {
   state = {
@@ -106,7 +106,7 @@ export class Find extends Component {
                                 <TextStyle variation="negative">
                                   Before
                                 </TextStyle>
-                                <div>{item.node.descriptionHtml}</div>
+                                <Fragment>{item.node.descriptionHtml}</Fragment>
                               </div>
                             </Layout.Section>
                             <Layout.Section oneHalf>
@@ -114,7 +114,9 @@ export class Find extends Component {
                                 <TextStyle variation="positive">
                                   After
                                 </TextStyle>
-                                <div>{item.node.descriptionHtmlAfter}</div>
+                                <Fragment>
+                                  {item.node.descriptionHtmlHighlight}
+                                </Fragment>
                               </div>
                             </Layout.Section>
                           </Layout>
@@ -152,6 +154,9 @@ export class Find extends Component {
       item.node.descriptionHtmlAfter = item.node.descriptionHtml
         .split(this.state.find)
         .join(this.state.replace);
+      item.node.descriptionHtmlHighlight = item.node.descriptionHtml
+        .split(this.state.find)
+        .join(`<span class="highlight">${this.state.replace}<span>`);
     });
 
     this.setState({
