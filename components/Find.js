@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
   Button,
   ButtonGroup,
@@ -106,7 +106,7 @@ export class Find extends Component {
                                 <TextStyle variation="negative">
                                   Before
                                 </TextStyle>
-                                <Fragment>{item.node.descriptionHtml}</Fragment>
+                                <div>{item.node.descriptionHtml}</div>
                               </div>
                             </Layout.Section>
                             <Layout.Section oneHalf>
@@ -114,9 +114,11 @@ export class Find extends Component {
                                 <TextStyle variation="positive">
                                   After
                                 </TextStyle>
-                                <Fragment>
-                                  {item.node.descriptionHtmlHighlight}
-                                </Fragment>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: item.node.descriptionHtmlHighlight
+                                  }}
+                                />
                               </div>
                             </Layout.Section>
                           </Layout>
