@@ -36,9 +36,8 @@ app.prepare().then(() => {
         const stringifiedBillingParams = JSON.stringify({
           recurring_application_charge: {
             name: "Recurring charge",
-            price: 4.99,
-            return_url: TUNNEL_URL,
-            test: true
+            price: 1.99,
+            return_url: TUNNEL_URL
           }
         });
 
