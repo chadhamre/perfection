@@ -5,8 +5,13 @@ const { default: createShopifyAuth } = require("@shopify/koa-shopify-auth");
 const dotenv = require("dotenv");
 const { verifyRequest } = require("@shopify/koa-shopify-auth");
 const session = require("koa-session");
+const logger = require("koa-logger");
 const { default: graphQLProxy } = require("@shopify/koa-shopify-graphql-proxy");
 const Router = require("koa-router");
+const {
+  receiveWebhook,
+  registerWebhook
+} = require("@shopify/koa-shopify-webhooks");
 const processPayment = require("./server/router");
 dotenv.config();
 
@@ -20,6 +25,7 @@ const { SHOPIFY_API_SECRET_KEY, SHOPIFY_API_KEY, TUNNEL_URL } = process.env;
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
+  server.use(logger());
   server.use(session(server));
   server.keys = [SHOPIFY_API_SECRET_KEY];
 
@@ -63,6 +69,12 @@ app.prepare().then(() => {
       }
     })
   );
+
+  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET_KEY });
+
+  router.post("/webhooks/redact", webhook, ctx => {
+    console.log("received webhook: ", ctx.state.webhook);
+  });
 
   server.use(graphQLProxy());
   router.get("*", verifyRequest(), async ctx => {
