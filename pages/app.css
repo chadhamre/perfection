@@ -1,0 +1,5 @@
+.loader-holder {
+  min-height: 128px;
+  display: flex;
+  justify-content: center;
+}

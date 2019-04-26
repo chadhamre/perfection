@@ -1,72 +1,73 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import {
-  Button,
-  Card,
-  Form,
-  FormLayout,
-  Layout,
-  Page,
-  SettingToggle,
-  Stack,
-  TextField,
-  TextStyle,
-  Heading
-} from "@shopify/polaris";
-import { ApolloConsumer } from "react-apollo";
-import store from "store-js";
+import { Page, Layout } from "@shopify/polaris";
+import { Find } from "./../components/Find";
+import { Loading } from "./../components/Loading";
+import "./app.css";
+
+const GET_PRODUCTS = gql`
+  query getProducts($cursor: String) {
+    products(first: 250, after: $cursor) {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          title
+          descriptionHtml
+        }
+        cursor
+      }
+    }
+  }
+`;
 
 class Index extends React.Component {
   state = {
     products: []
   };
 
-  fetchProducts = (client, cursor, products = []) => {
-    client
-      .query({
-        query: gql`
-          query Products($cursor: String) {
-            products(first: 5, after: $cursor) {
-              pageInfo {
-                hasNextPage
-              }
-              edges {
-                cursor
-                node {
-                  id
-                  title
-                  descriptionHtml
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          cursor: cursor
-        }
-      })
-      .then(async data => {
-        products.push(...data.data.products.edges);
-        if (
-          data.data.products.edges[0].cursor &&
-          data.data.products.pageInfo.hasNextPage
-        ) {
-          await this.fetchProducts(
-            client,
-            data.data.products.edges[0].cursor,
-            products
-          );
-        } else console.log("ALL", JSON.stringify(products));
-      })
-      .catch(error => console.error(error));
-  };
-
   render() {
-    const accessToken = store.get("accessToken");
-    console.log("AT", accessToken);
     return (
-      // <ApolloConsumer>{client => this.fetchProducts(client)}</ApolloConsumer>
-      <div>Access Granted</div>
+      <Page fullWidth>
+        <Layout>
+          <Layout.Section>
+            <Query query={GET_PRODUCTS}>
+              {({ data, loading, error, fetchMore }) => {
+                if (loading) return <Loading />;
+                if (error) return <div>{error.message}</div>;
+
+                if (data.products.pageInfo.hasNextPage)
+                  fetchMore({
+                    variables: {
+                      cursor:
+                        data.products.edges[data.products.edges.length - 1]
+                          .cursor
+                    },
+                    updateQuery: (previousResult, { fetchMoreResult }) => {
+                      return {
+                        products: {
+                          pageInfo: { ...fetchMoreResult.products.pageInfo },
+                          edges: [
+                            ...previousResult.products.edges,
+                            ...fetchMoreResult.products.edges
+                          ],
+                          __typename: fetchMoreResult.products.__typename
+                        }
+                      };
+                    }
+                  });
+
+                if (!data.products.pageInfo.hasNextPage) {
+                  return <Find products={data.products.edges}>Done</Find>;
+                }
+                return <Loading />;
+              }}
+            </Query>
+          </Layout.Section>
+        </Layout>
+      </Page>
     );
   }
 }
