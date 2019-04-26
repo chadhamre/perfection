@@ -7,14 +7,9 @@ import {
   Form,
   FormLayout,
   Layout,
-  Page,
-  SettingToggle,
-  Stack,
   TextField,
   TextStyle,
-  Heading,
-  ResourceList,
-  Tag
+  ResourceList
 } from "@shopify/polaris";
 import Apply from "./Apply";
 import "./Find.css";
