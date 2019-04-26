@@ -69,7 +69,7 @@ export class Find extends Component {
                               this.handleApply(this.state.filteredProducts);
                             }}
                           >
-                            Apply
+                            Replace All
                           </Button>
                         ) : null}
                       </ButtonGroup>
