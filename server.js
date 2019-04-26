@@ -13,7 +13,6 @@ const {
   registerWebhook
 } = require("@shopify/koa-shopify-webhooks");
 const processPayment = require("./server/router");
-const store = require("store-js");
 dotenv.config();
 
 const port = parseInt(process.env.PORT, 10) || 3000;
@@ -39,8 +38,6 @@ app.prepare().then(() => {
       scopes: ["read_products", "write_products"],
       async afterAuth(ctx) {
         const { shop, accessToken } = ctx.session;
-        console.log("SAVE TOKEN");
-        store.set("accessToken", accessToken);
         ctx.cookies.set("shopOrigin", shop, { httpOnly: false });
         const stringifiedBillingParams = JSON.stringify({
           recurring_application_charge: {
