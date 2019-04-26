@@ -45,7 +45,7 @@ export class Find extends Component {
             <Layout.Section>
               <Layout.AnnotatedSection
                 title="Find & Replace"
-                description="These changes cannot be undone! We recomend doing a catalog backup before applying changes"
+                description="These changes cannot be undone. We recommend backing up your catalog to CSV before applying changes."
               >
                 <Card sectioned>
                   <Form onSubmit={this.handleSubmit}>
