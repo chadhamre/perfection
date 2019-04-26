@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Interweave from "interweave";
 import {
   Button,
   ButtonGroup,
@@ -24,7 +25,8 @@ export class Find extends Component {
     find: "",
     replace: "",
     filteredProducts: [],
-    applying: false
+    applying: false,
+    preview: false
   };
 
   componentWillMount() {
@@ -43,7 +45,7 @@ export class Find extends Component {
             <Layout.Section>
               <Layout.AnnotatedSection
                 title="Find & Replace"
-                description="Search product descriptions."
+                description="These changes cannot be undone! We recomend doing a catalog backup before applying changes"
               >
                 <Card sectioned>
                   <Form onSubmit={this.handleSubmit}>
@@ -66,7 +68,7 @@ export class Find extends Component {
                         <Button primary submit>
                           Preview
                         </Button>
-                        {this.state.filteredProducts.length ? (
+                        {this.state.preview ? (
                           <Button
                             onClick={() => {
                               this.handleApply(this.state.filteredProducts);
@@ -106,7 +108,13 @@ export class Find extends Component {
                                 <TextStyle variation="negative">
                                   Before
                                 </TextStyle>
-                                <div>{item.node.descriptionHtml}</div>
+                                <div>
+                                  <Interweave
+                                    content={
+                                      item.node.descriptionHtmlBeforeHighlight
+                                    }
+                                  />
+                                </div>
                               </div>
                             </Layout.Section>
                             <Layout.Section oneHalf>
@@ -114,7 +122,13 @@ export class Find extends Component {
                                 <TextStyle variation="positive">
                                   After
                                 </TextStyle>
-                                <div>{item.node.descriptionHtmlHighlight}</div>
+                                <div>
+                                  <Interweave
+                                    content={
+                                      item.node.descriptionHtmlAfterHighlight
+                                    }
+                                  />
+                                </div>
                               </div>
                             </Layout.Section>
                           </Layout>
@@ -149,22 +163,26 @@ export class Find extends Component {
     );
 
     filteredProducts.forEach(item => {
+      item.node.descriptionHtmlBeforeHighlight = item.node.descriptionHtml
+        .split(this.state.find)
+        .join(`<span class='highlight red'>${this.state.find}</span>`);
       item.node.descriptionHtmlAfter = item.node.descriptionHtml
         .split(this.state.find)
         .join(this.state.replace);
-      item.node.descriptionHtmlHighlight = item.node.descriptionHtml
+      item.node.descriptionHtmlAfterHighlight = item.node.descriptionHtml
         .split(this.state.find)
-        .join(`<span class="highlight">${this.state.replace}<span>`);
+        .join(`<span class='highlight green'>${this.state.replace}</span>`);
     });
 
     this.setState({
       find: this.state.find,
       replace: this.state.replace,
-      filteredProducts
+      filteredProducts,
+      preview: true
     });
   };
   handleChange = field => {
-    return value => this.setState({ [field]: value });
+    return value => this.setState({ [field]: value, preview: false });
   };
   handleToggle = () => {
     this.setState(({ enabled }) => {

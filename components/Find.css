@@ -1,6 +1,13 @@
 .highlight {
-  background: #f60;
-  padding: 5px;
+  padding: 1px 0px;
   display: inline-block;
-  color: #fff;
+  white-space: pre;
+}
+
+.red {
+  background: rgba(190, 23, 32, 0.1);
+}
+
+.green {
+  background: rgba(22, 127, 68, 0.1);
 }

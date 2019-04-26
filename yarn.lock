@@ -823,7 +823,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.5.tgz#27733a949f5d9972d87109297cffb62207ace70f"
   integrity sha512-Ja7d4s0qyGFxjGeDq5S7Si25OFibSAHUi6i17UWnwNnpitADN7hah9q0Tl25gxuV5R1u2Bx+np6w4LHXfHyj/g==
 
-"@types/prop-types@*", "@types/prop-types@^15.5.5":
+"@types/prop-types@*", "@types/prop-types@^15.5.5", "@types/prop-types@^15.7.1":
   version "15.7.1"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
   integrity sha512-CFzn9idOEpHrgdw8JsoTkaDDyRWk1jrzIV8djzcgpq0y9tG4B4lFT+Nxh52DVpDXV+n4+NPNv7M1Dj5uMp6XFg==
@@ -842,7 +842,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.0.2", "@types/react@^16.3.14", "@types/react@^16.4.7":
+"@types/react@*", "@types/react@^16.0.2", "@types/react@^16.3.14", "@types/react@^16.4.7", "@types/react@^16.8.14":
   version "16.8.14"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.14.tgz#b561bfabeb8f60d12e6d4766367e7a9ae927aa18"
   integrity sha512-26tFVJ1omGmzIdFTFmnC5zhz1GTaqCjxgUxV4KzWvsybF42P7/j4RBn6UeO3KbHPXqKWZszMXMoI65xIWm954A==
@@ -2900,6 +2900,15 @@ ini@~1.3.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+
+interweave@^11.0.0-alpha.1:
+  version "11.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/interweave/-/interweave-11.0.0-alpha.1.tgz#9cbee79915ff24b477775d04639c06ac1f969dd4"
+  integrity sha512-mPC5NacfEErOW+BB3ldyZTkXSffWWA8sMTSk+Qw0OPQ0hi/pq1Vdr7yGnJMZ1QN6bR8gZnC3bYAAwcJzvFVLLQ==
+  dependencies:
+    "@types/prop-types" "^15.7.1"
+    "@types/react" "^16.8.14"
+    prop-types "^15.7.2"
 
 invariant@^2.2.2:
   version "2.2.4"
