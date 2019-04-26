@@ -11,7 +11,6 @@ import {
   TextStyle,
   Heading
 } from "@shopify/polaris";
-import ProductQuery from "./../components/ProductQuery";
 
 class AnnotatedLayout extends React.Component {
   state = {
