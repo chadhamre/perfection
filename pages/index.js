@@ -1,3 +1,5 @@
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
 import {
   Button,
   Card,
@@ -11,68 +13,62 @@ import {
   TextStyle,
   Heading
 } from "@shopify/polaris";
-import ProductQuery from "./../components/ProductQuery";
+import { ApolloConsumer } from "react-apollo";
+import store from "store-js";
 
-class AnnotatedLayout extends React.Component {
+class Index extends React.Component {
   state = {
-    find: "",
-    replace: ""
+    products: []
+  };
+
+  fetchProducts = (client, cursor, products = []) => {
+    client
+      .query({
+        query: gql`
+          query Products($cursor: String) {
+            products(first: 5, after: $cursor) {
+              pageInfo {
+                hasNextPage
+              }
+              edges {
+                cursor
+                node {
+                  id
+                  title
+                  descriptionHtml
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          cursor: cursor
+        }
+      })
+      .then(async data => {
+        products.push(...data.data.products.edges);
+        if (
+          data.data.products.edges[0].cursor &&
+          data.data.products.pageInfo.hasNextPage
+        ) {
+          await this.fetchProducts(
+            client,
+            data.data.products.edges[0].cursor,
+            products
+          );
+        } else console.log("ALL", JSON.stringify(products));
+      })
+      .catch(error => console.error(error));
   };
 
   render() {
-    const { find, replace } = this.state;
-
+    const accessToken = store.get("accessToken");
+    console.log("AT", accessToken);
     return (
-      <Page>
-        <Layout.Section>
-          <Layout.AnnotatedSection
-            title="Find & Replace"
-            description="Search product descriptions."
-          >
-            <Card sectioned>
-              <Form onSubmit={this.handleSubmit}>
-                <FormLayout>
-                  <FormLayout.Group>
-                    <TextField
-                      value={find}
-                      onChange={this.handleChange("find")}
-                      label="Find"
-                      type="find"
-                    />
-                    <TextField
-                      value={replace}
-                      onChange={this.handleChange("replace")}
-                      label="Replace"
-                      type="replace"
-                    />
-                  </FormLayout.Group>
-                  <Button primary submit>
-                    Find
-                  </Button>
-                </FormLayout>
-              </Form>
-            </Card>
-          </Layout.AnnotatedSection>
-        </Layout.Section>
-        {this.state.find ? <ProductQuery find={this.state.find} /> : null}
-      </Page>
+      // <ApolloConsumer>{client => this.fetchProducts(client)}</ApolloConsumer>
+      <div>Access Granted</div>
     );
   }
-  handleSubmit = () => {
-    this.setState({
-      find: this.state.find,
-      replace: this.state.replace
-    });
-    console.log("submission", this.state);
-  };
-  handleChange = field => {
-    return value => this.setState({ [field]: value });
-  };
-  handleToggle = () => {
-    this.setState(({ enabled }) => {
-      return { enabled: !enabled };
-    });
-  };
 }
 
-export default AnnotatedLayout;
+export default Index;
