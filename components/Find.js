@@ -37,7 +37,7 @@ export class Find extends Component {
 
   render() {
     return (
-      <Page fullWidth>
+      <div>
         {this.state.applying ? (
           <Apply changes={this.state.filteredProducts} />
         ) : (
@@ -154,7 +154,7 @@ export class Find extends Component {
             </Layout.Section>
           </Layout>
         )}
-      </Page>
+      </div>
     );
   }
   handleSubmit = () => {

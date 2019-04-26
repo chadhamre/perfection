@@ -1,18 +1,13 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import {
-  Page,
-  Spinner,
-  Layout,
-  Stack,
-  Heading,
-  TextStyle
-} from "@shopify/polaris";
+import { Page, Layout } from "@shopify/polaris";
 import { Find } from "./../components/Find";
+import { Loading } from "./../components/Loading";
+import "./app.css";
 
 const GET_PRODUCTS = gql`
   query getProducts($cursor: String) {
-    products(first: 6, after: $cursor) {
+    products(first: 250, after: $cursor) {
       pageInfo {
         hasNextPage
       }
@@ -40,17 +35,7 @@ class Index extends React.Component {
           <Layout.Section>
             <Query query={GET_PRODUCTS}>
               {({ data, loading, error, fetchMore }) => {
-                if (loading)
-                  return (
-                    <Stack alignment="center">
-                      <Stack.Item>
-                        <Spinner />
-                      </Stack.Item>
-                      <Stack.Item>
-                        <TextStyle>loading products to memory...</TextStyle>
-                      </Stack.Item>
-                    </Stack>
-                  );
+                if (loading) return <Loading />;
                 if (error) return <div>{error.message}</div>;
 
                 if (data.products.pageInfo.hasNextPage)
@@ -77,16 +62,7 @@ class Index extends React.Component {
                 if (!data.products.pageInfo.hasNextPage) {
                   return <Find products={data.products.edges}>Done</Find>;
                 }
-                return (
-                  <Stack alignment="center">
-                    <Stack.Item>
-                      <Spinner />
-                    </Stack.Item>
-                    <Stack.Item>
-                      <TextStyle>loading products to memory...</TextStyle>
-                    </Stack.Item>
-                  </Stack>
-                );
+                return <Loading />;
               }}
             </Query>
           </Layout.Section>

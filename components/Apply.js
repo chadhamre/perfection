@@ -1,7 +1,14 @@
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import React, { Component } from "react";
-import { Layout, Page, Stack, Spinner, TextStyle } from "@shopify/polaris";
+import {
+  Layout,
+  Page,
+  Stack,
+  Spinner,
+  TextStyle,
+  Card
+} from "@shopify/polaris";
 
 const UPDATE_BODY = gql`
   mutation productUpdate($input: ProductInput!) {
@@ -35,20 +42,29 @@ export class Apply extends Component {
       this.state.change <= this.state.changes.length
     )
       return (
-        <Page fullWidth>
+        <div>
           <Layout>
             <Layout.Section>
-              <Stack alignment="center">
-                <Stack.Item>
-                  <Spinner />
-                </Stack.Item>
-                <Stack.Item>
-                  <TextStyle>
-                    Updating {this.state.change} of {this.state.changes.length}{" "}
-                    Product Descriptions
-                  </TextStyle>
-                </Stack.Item>
-              </Stack>
+              <Layout.AnnotatedSection
+                title="Find & Replace"
+                description="These changes cannot be undone. We recommend backing up your catalog to CSV before applying any changes."
+              >
+                <Card sectioned>
+                  <div className="loader-holder">
+                    <Stack alignment="center">
+                      <Stack.Item>
+                        <Spinner />
+                      </Stack.Item>
+                      <Stack.Item>
+                        <TextStyle>
+                          Updating {this.state.change} of{" "}
+                          {this.state.changes.length} Product Descriptions
+                        </TextStyle>
+                      </Stack.Item>
+                    </Stack>
+                  </div>
+                </Card>
+              </Layout.AnnotatedSection>
             </Layout.Section>
           </Layout>
           <Mutation
@@ -72,7 +88,7 @@ export class Apply extends Component {
               return null;
             }}
           </Mutation>
-        </Page>
+        </div>
       );
     return null;
   }
