@@ -13,6 +13,7 @@ import {
 } from "@shopify/polaris";
 import Apply from "./Apply";
 import "./Find.css";
+import Cookies from "js-cookie";
 
 export class Find extends Component {
   state = {
@@ -63,7 +64,8 @@ export class Find extends Component {
                         <Button primary submit>
                           Preview
                         </Button>
-                        {this.state.preview ? (
+                        {this.state.preview &&
+                        this.state.filteredProducts.length ? (
                           <Button
                             onClick={() => {
                               this.handleApply(this.state.filteredProducts);
@@ -82,15 +84,20 @@ export class Find extends Component {
               <Card>
                 {this.state.filteredProducts.length > 0 ? (
                   <ResourceList
+                    showHeader
                     resourceName={{ singular: "product", plural: "products" }}
                     items={this.state.filteredProducts}
                     renderItem={item => {
                       return (
                         <ResourceList.Item
                           id={item.node.id}
-                          accessibilityLabel={`View details for ${
-                            item.node.title
-                          }`}
+                          onClick={() =>
+                            (window.parent.location.href = `https://${Cookies.get(
+                              "shopOrigin"
+                            )}/admin/products/${item.node.id
+                              .split("gid://shopify/Product/")
+                              .join("")}`)
+                          }
                         >
                           <h3>
                             <TextStyle variation="strong">
