@@ -22,7 +22,7 @@ class AnnotatedLayout extends React.Component {
     const { find, replace } = this.state;
 
     return (
-      <Page>
+      <div>
         <Layout.Section>
           <Layout.AnnotatedSection
             title="Find & Replace"
@@ -54,7 +54,7 @@ class AnnotatedLayout extends React.Component {
           </Layout.AnnotatedSection>
         </Layout.Section>
         {this.state.find ? <ProductQuery find={this.state.find} /> : null}
-      </Page>
+      </div>
     );
   }
   handleSubmit = () => {
