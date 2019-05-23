@@ -21,8 +21,11 @@ class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <title>Find & Replace</title>
+          <title>Perfection</title>
           <meta charSet="utf-8" />
+          <script type="text/javascript">
+            {`var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"c0e3f4fc1b09d3c2dbb972730d6d92e1c50a5fb3b6485104189c6bdb63b010841a2010ab7b6727677d37b27582c0e9c4", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);d.write("<div id='zsiqwidget'></div>");`}
+          </script>
         </Head>
         <AppProvider
           shopOrigin={this.state.shopOrigin}

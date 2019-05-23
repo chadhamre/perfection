@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Page, Layout, FooterHelp, Link } from "@shopify/polaris";
+import { Page, Layout } from "@shopify/polaris";
 import { Find } from "./../components/Find";
 import { Loading } from "./../components/Loading";
 import "./app.css";
@@ -67,12 +67,6 @@ class Index extends React.Component {
             </Query>
           </Layout.Section>
         </Layout>
-        <FooterHelp>
-          <Link url="mailto:hello@saskatoonlabs.com?subject=Help with Perfection">
-            contact us
-          </Link>{" "}
-          for help.
-        </FooterHelp>
       </Page>
     );
   }
