@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Page, Layout } from "@shopify/polaris";
+import { Page, Layout, Banner } from "@shopify/polaris";
 import { Find } from "./../components/Find";
 import { Loading } from "./../components/Loading";
 import "./app.css";
@@ -25,12 +25,28 @@ const GET_PRODUCTS = gql`
 
 class Index extends React.Component {
   state = {
-    products: []
+    products: [],
+    noConfigBanner: true
+  };
+
+  renderBanner = () => {
+    return (
+      <Banner
+        onDismiss={() => {
+          this.setState({ noConfigBanner: false });
+        }}
+        ref="noConfigBanner"
+        status="success"
+      >
+        App initialized successfully. There is no configuration required.
+      </Banner>
+    );
   };
 
   render() {
     return (
       <Page fullWidth>
+        {this.state.noConfigBanner ? this.renderBanner() : null}
         <Layout>
           <Layout.Section>
             <Query query={GET_PRODUCTS}>
