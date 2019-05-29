@@ -9,7 +9,6 @@ const session = require("koa-session");
 dotenv.config();
 const logger = require("koa-logger");
 const { default: graphQLProxy } = require("@shopify/koa-shopify-graphql-proxy");
-const { ApiVersion } = require("@shopify/koa-shopify-graphql-proxy");
 const Router = require("koa-router");
 const {
   receiveWebhook,
@@ -83,7 +82,7 @@ app.prepare().then(() => {
     console.log("received webhook: ", ctx.state.webhook);
   });
 
-  server.use(graphQLProxy({ version: ApiVersion.April19 }));
+  server.use(graphQLProxy());
   router.get("*", verifyRequest(), async ctx => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
