@@ -35,23 +35,6 @@ app.prepare().then(() => {
   server.use(session(server));
   server.keys = [SHOPIFY_API_SECRET_KEY];
 
-  server.use(async (ctx, next) => {
-    if (
-      !ctx.request.url.split("?")[0] === "auth/callback" &&
-      ctx.request.header.cookie
-    ) {
-      ctx.request.header.cookie = ctx.request.header.cookie
-        .split(" ")
-        .filter(
-          item =>
-            ["koa:sess", "koa:sess.sig"].indexOf(item.split("=")[0]) === -1
-        )
-        .join(" ");
-    }
-
-    await next();
-  });
-
   router.get("/", processPayment);
 
   server.use(
