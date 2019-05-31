@@ -43,7 +43,7 @@ app.prepare().then(() => {
         (ctx.request.url.split("?")[0] === "/" &&
           ctx.request.querystring.split("&") &&
           ctx.request.querystring.split("&")[0].split("=")[0] === "hmac" &&
-          ctx.request.querystring.split("&")[0].split("=")[1] !== "locale") ||
+          ctx.request.querystring.split("&")[1].split("=")[0] !== "locale") ||
         (ctx.request.url.split("?")[0] === "/auth/callback" &&
           ctx.request.querystring.split("&") &&
           ctx.request.querystring.split("&")[1].split("=")[0] === "hmac")
