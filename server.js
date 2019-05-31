@@ -5,6 +5,7 @@ const { default: createShopifyAuth } = require("@shopify/koa-shopify-auth");
 const dotenv = require("dotenv");
 const { verifyRequest } = require("@shopify/koa-shopify-auth");
 const session = require("koa-session");
+const restartHeroku = require("./server/restart");
 
 dotenv.config();
 const logger = require("koa-logger");
@@ -53,6 +54,13 @@ app.prepare().then(() => {
           }
         });
 
+        const registration = await registerWebhook({
+          address: `${TUNNEL_URL}/webhooks/uninstall`,
+          topic: "APP_UNINSTALLED",
+          accessToken,
+          shop
+        });
+
         const options = {
           method: "POST",
           body: stringifiedBillingParams,
@@ -80,6 +88,11 @@ app.prepare().then(() => {
 
   router.post("/webhooks/redact", webhook, ctx => {
     console.log("received webhook: ", ctx.state.webhook);
+  });
+
+  router.post("/webhooks/uninstall", webhook, ctx => {
+    console.log("WEBHOOK UNINSTALL");
+    restartHeroku();
   });
 
   server.use(graphQLProxy());
