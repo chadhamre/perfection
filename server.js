@@ -41,7 +41,7 @@ app.prepare().then(() => {
     if (
       ctx.request.url.split("?")[0] === "/auth/callback" &&
       ctx.request.querystring.split("&") &&
-      ctx.request.querystring.split("&")[0].split("=")[0] === "hmac" &&
+      ctx.request.querystring.split("&")[2].split("=")[0] === "hmac" &&
       ctx.request.header.cookie
     ) {
       console.log("^ --------- DROP COOKIES ---------");
