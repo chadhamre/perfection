@@ -36,8 +36,8 @@ app.prepare().then(() => {
   router.get("/", processPayment);
 
   server.use(async (ctx, next) => {
-    console.log("URL", ctx.request.url.split("?")[0]);
-    console.log("SEARCH", ctx.request.querystring.split("&"));
+    // console.log("URL", ctx.request.url.split("?")[0]);
+    // console.log("SEARCH", ctx.request.querystring.split("&"));
     if (ctx.request.header.cookie) {
       if (
         (ctx.request.url.split("?")[0] === "/" &&
@@ -49,7 +49,7 @@ app.prepare().then(() => {
           ctx.request.querystring.split("&")[1].split("=")[0] === "hmac")
       ) {
         {
-          console.log("^ --------- DROP COOKIES ---------");
+          console.log("DROP COOKIES", ctx.request.url);
           ctx.request.header.cookie = ctx.request.header.cookie
             .split(" ")
             .filter(
