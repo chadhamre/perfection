@@ -1,9 +1,11 @@
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { Page, Layout, Banner } from "@shopify/polaris";
+import "./app.css";
+
+import { Banner, Layout, Page } from "@shopify/polaris";
+
 import { Find } from "./../components/Find";
 import { Loading } from "./../components/Loading";
-import "./app.css";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const GET_PRODUCTS = gql`
   query getProducts($cursor: String) {
@@ -51,7 +53,9 @@ class Index extends React.Component {
                     updateQuery: (previousResult, { fetchMoreResult }) => {
                       return {
                         products: {
-                          pageInfo: { ...fetchMoreResult.products.pageInfo },
+                          pageInfo: {
+                            ...fetchMoreResult.products.pageInfo
+                          },
                           edges: [
                             ...previousResult.products.edges,
                             ...fetchMoreResult.products.edges

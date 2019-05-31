@@ -36,11 +36,15 @@ app.prepare().then(() => {
   router.get("/", processPayment);
 
   server.use(async (ctx, next) => {
+    console.log("URL", ctx.request.url.split("?")[0]);
+    console.log("SEARCH", ctx.request.querystring.split("&"));
     if (
       ctx.request.url.split("?")[0] === "/auth/callback" &&
+      ctx.request.querystring.split("&") &&
+      ctx.request.querystring.split("&")[0].split("=")[0] === "hmac" &&
       ctx.request.header.cookie
     ) {
-      console.log("DROP COOKIES");
+      console.log("^ --------- DROP COOKIES ---------");
       ctx.request.header.cookie = ctx.request.header.cookie
         .split(" ")
         .filter(
