@@ -11,10 +11,7 @@ dotenv.config();
 const logger = require("koa-logger");
 const { default: graphQLProxy } = require("@shopify/koa-shopify-graphql-proxy");
 const Router = require("koa-router");
-const {
-  receiveWebhook,
-  registerWebhook
-} = require("@shopify/koa-shopify-webhooks");
+const { receiveWebhook } = require("@shopify/koa-shopify-webhooks");
 const processPayment = require("./server/router");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
@@ -40,9 +37,10 @@ app.prepare().then(() => {
 
   server.use(async (ctx, next) => {
     if (
-      !ctx.request.url.split("?")[0] === "auth/callback" &&
+      ctx.request.url.split("?")[0] === "/auth/callback" &&
       ctx.request.header.cookie
     ) {
+      console.log("DROP COOKIES");
       ctx.request.header.cookie = ctx.request.header.cookie
         .split(" ")
         .filter(
@@ -51,7 +49,6 @@ app.prepare().then(() => {
         )
         .join(" ");
     }
-
     await next();
   });
 
@@ -69,13 +66,6 @@ app.prepare().then(() => {
             price: 1.99,
             return_url: TUNNEL_URL
           }
-        });
-
-        const registration = await registerWebhook({
-          address: `${TUNNEL_URL}/webhooks/uninstall`,
-          topic: "APP_UNINSTALLED",
-          accessToken,
-          shop
         });
 
         const options = {
@@ -105,11 +95,6 @@ app.prepare().then(() => {
 
   router.post("/webhooks/redact", webhook, ctx => {
     console.log("received webhook: ", ctx.state.webhook);
-  });
-
-  router.post("/webhooks/uninstall", webhook, ctx => {
-    console.log("WEBHOOK UNINSTALL");
-    restartHeroku();
   });
 
   server.use(graphQLProxy());
