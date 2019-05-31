@@ -38,6 +38,23 @@ app.prepare().then(() => {
 
   router.get("/", processPayment);
 
+  server.use(async (ctx, next) => {
+    if (
+      !ctx.request.url.split("?")[0] === "auth/callback" &&
+      ctx.request.header.cookie
+    ) {
+      ctx.request.header.cookie = ctx.request.header.cookie
+        .split(" ")
+        .filter(
+          item =>
+            ["koa:sess", "koa:sess.sig"].indexOf(item.split("=")[0]) === -1
+        )
+        .join(" ");
+    }
+
+    await next();
+  });
+
   server.use(
     createShopifyAuth({
       apiKey: SHOPIFY_API_KEY,
