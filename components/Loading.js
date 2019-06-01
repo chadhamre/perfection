@@ -1,4 +1,4 @@
-import { Stack, Spinner, TextStyle, Layout, Card } from "@shopify/polaris";
+import { Card, Layout, Spinner, Stack, TextStyle } from "@shopify/polaris";
 
 export class Loading extends React.Component {
   render() {
@@ -14,7 +14,7 @@ export class Loading extends React.Component {
                 <Spinner />
               </Stack.Item>
               <Stack.Item>
-                <TextStyle>loading products to memory...</TextStyle>
+                <TextStyle>loading descriptions to memory...</TextStyle>
               </Stack.Item>
             </Stack>
           </div>

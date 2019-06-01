@@ -3,3 +3,8 @@
   display: flex;
   justify-content: center;
 }
+
+.clickable-grey {
+  cursor: pointer;
+  color: #919eaa;
+}

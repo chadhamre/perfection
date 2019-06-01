@@ -1,19 +1,23 @@
-import React, { Component } from "react";
-import Interweave from "interweave";
+import "./Find.css";
+
 import {
   Button,
   ButtonGroup,
   Card,
   Form,
   FormLayout,
+  Icon,
   Layout,
+  Link,
+  ResourceList,
   TextField,
-  TextStyle,
-  ResourceList
+  TextStyle
 } from "@shopify/polaris";
+import React, { Component } from "react";
+
 import Apply from "./Apply";
-import "./Find.css";
 import Cookies from "js-cookie";
+import Interweave from "interweave";
 
 export class Find extends Component {
   state = {
@@ -64,6 +68,7 @@ export class Find extends Component {
                         <Button primary submit>
                           Preview
                         </Button>
+
                         {this.state.preview &&
                         this.state.filteredProducts.length ? (
                           <Button
@@ -74,6 +79,13 @@ export class Find extends Component {
                             Replace All
                           </Button>
                         ) : null}
+
+                        <div
+                          className="clickable-grey"
+                          onClick={() => this.props.refetch()}
+                        >
+                          refresh
+                        </div>
                       </ButtonGroup>
                     </FormLayout>
                   </Form>
@@ -91,13 +103,13 @@ export class Find extends Component {
                       return (
                         <ResourceList.Item
                           id={item.node.id}
-                          onClick={() =>
-                            (window.parent.location.href = `https://${Cookies.get(
-                              "shopOrigin"
-                            )}/admin/products/${item.node.id
-                              .split("gid://shopify/Product/")
-                              .join("")}`)
-                          }
+                          // onClick={() =>
+                          //   (window.parent.location.href = `https://${Cookies.get(
+                          //     "shopOrigin"
+                          //   )}/admin/products/${item.node.id
+                          //     .split("gid://shopify/Product/")
+                          //     .join("")}`)
+                          // }
                         >
                           <h3>
                             <TextStyle variation="strong">
@@ -161,16 +173,22 @@ export class Find extends Component {
   }
   handleSubmit = () => {
     let filteredProducts = this.state.products.filter(
-      item => item.node.descriptionHtml.indexOf(this.state.find) !== -1
+      item =>
+        JSON.stringify(item.node.descriptionHtml).indexOf(this.state.find) !==
+        -1
     );
 
     filteredProducts.forEach(item => {
+      // console.log(item.node.descriptionHtml);
+      // console.log(JSON.stringify(item.node.descriptionHtml));
       item.node.descriptionHtmlBeforeHighlight = item.node.descriptionHtml
         .split(this.state.find)
         .join(`<span class='highlight red'>${this.state.find}</span>`);
-      item.node.descriptionHtmlAfter = item.node.descriptionHtml
-        .split(this.state.find)
-        .join(this.state.replace);
+      item.node.descriptionHtmlAfter = JSON.parse(
+        JSON.stringify(item.node.descriptionHtml)
+          .split(this.state.find)
+          .join(this.state.replace)
+      );
       item.node.descriptionHtmlAfterHighlight = item.node.descriptionHtml
         .split(this.state.find)
         .join(`<span class='highlight green'>${this.state.replace}</span>`);

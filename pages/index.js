@@ -67,8 +67,13 @@ class Index extends React.Component {
                   });
 
                 if (!data.products.pageInfo.hasNextPage) {
-                  return <Find products={data.products.edges}>Done</Find>;
+                  return (
+                    <Find products={data.products.edges} refetch={refetch}>
+                      Done
+                    </Find>
+                  );
                 }
+
                 return <Loading />;
               }}
             </Query>
