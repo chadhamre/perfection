@@ -39,7 +39,7 @@ class Index extends React.Component {
         <Layout>
           <Layout.Section>
             <Query query={GET_PRODUCTS}>
-              {({ data, loading, error, fetchMore }) => {
+              {({ data, loading, error, fetchMore, refetch }) => {
                 if (loading) return <Loading />;
                 if (error) return <div>{error.message}</div>;
 
