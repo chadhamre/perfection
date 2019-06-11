@@ -5,7 +5,6 @@ const { default: createShopifyAuth } = require("@shopify/koa-shopify-auth");
 const dotenv = require("dotenv");
 const { verifyRequest } = require("@shopify/koa-shopify-auth");
 const session = require("koa-session");
-const restartHeroku = require("./server/restart");
 
 dotenv.config();
 const logger = require("koa-logger");
