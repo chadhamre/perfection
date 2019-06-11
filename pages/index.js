@@ -33,7 +33,6 @@ class Index extends React.Component {
   };
 
   showFaq = show => {
-    console.log("FAQ");
     this.setState({ showFaq: show });
   };
 
