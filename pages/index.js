@@ -1,9 +1,11 @@
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { Page, Layout } from "@shopify/polaris";
+import "./app.css";
+
+import { Layout, Page } from "@shopify/polaris";
+
 import { Find } from "./../components/Find";
 import { Loading } from "./../components/Loading";
-import "./app.css";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const GET_PRODUCTS = gql`
   query getProducts($cursor: String) {
@@ -38,7 +40,8 @@ class Index extends React.Component {
                 if (loading) return <Loading />;
                 if (error) return <div>{error.message}</div>;
 
-                if (data.products.pageInfo.hasNextPage)
+                if (data.products.pageInfo.hasNextPage) {
+                  console.log("FETCHING MORE");
                   fetchMore({
                     variables: {
                       cursor:
@@ -58,6 +61,7 @@ class Index extends React.Component {
                       };
                     }
                   });
+                }
 
                 if (!data.products.pageInfo.hasNextPage) {
                   return <Find products={data.products.edges}>Done</Find>;
