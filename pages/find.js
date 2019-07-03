@@ -3,13 +3,13 @@ import {
   Card,
   Form,
   FormLayout,
+  Heading,
   Layout,
   Page,
   SettingToggle,
   Stack,
   TextField,
-  TextStyle,
-  Heading
+  TextStyle
 } from "@shopify/polaris";
 
 class AnnotatedLayout extends React.Component {
@@ -62,7 +62,6 @@ class AnnotatedLayout extends React.Component {
       find: this.state.find,
       replace: this.state.replace
     });
-    console.log("submission", this.state);
   };
   handleChange = field => {
     return value => this.setState({ [field]: value });
