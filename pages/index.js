@@ -92,6 +92,7 @@ class Index extends React.Component {
                   }
 
                   if (!data.products.pageInfo.hasNextPage) {
+                    console.log("DONE", data.products.pageInfo);
                     return (
                       <Find products={data.products.edges} refetch={refetch}>
                         Done
