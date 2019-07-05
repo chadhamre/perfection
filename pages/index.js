@@ -10,7 +10,7 @@ import gql from "graphql-tag";
 
 const GET_PRODUCTS = gql`
   query getProducts($cursor: String) {
-    products(first: 250, after: $cursor) {
+    products(first: 25, after: $cursor) {
       pageInfo {
         hasNextPage
       }
