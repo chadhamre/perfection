@@ -61,7 +61,10 @@ class Index extends React.Component {
               <Query query={GET_PRODUCTS}>
                 {({ data, loading, error, fetchMore, refetch }) => {
                   if (loading) return <Loading />;
-                  if (error) return <div>{error.message}</div>;
+                  if (error) {
+                    console.log("ERROR", error);
+                    return <div>{error.message}</div>;
+                  }
 
                   if (data.products.pageInfo.hasNextPage) {
                     fetchMore({
