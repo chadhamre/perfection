@@ -64,7 +64,7 @@ class Index extends React.Component {
                   if (error) return <div>{error.message}</div>;
 
                   if (data.products.pageInfo.hasNextPage) {
-                    console.log("FETCH MORE");
+
                     fetchMore({
                       variables: {
                         cursor:
@@ -72,6 +72,7 @@ class Index extends React.Component {
                             .cursor
                       },
                       updateQuery: (previousResult, { fetchMoreResult }) => {
+                        console.log("FETCH MORE");
                         return {
                           products: {
                             pageInfo: {
