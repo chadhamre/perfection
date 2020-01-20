@@ -736,11 +736,13 @@
     lodash "^4.17.4"
     lodash-decorators "^4.3.5"
 
-"@shopify/koa-shopify-auth@^3.1.22":
-  version "3.1.22"
-  resolved "https://registry.yarnpkg.com/@shopify/koa-shopify-auth/-/koa-shopify-auth-3.1.22.tgz#a7b937db5034a73f6b9b0cd667d773d9b951d640"
-  integrity sha512-2uNuQ4cliVLh1xkZzt0TosvTBAgGk/zfMOd0bVN/4NdJE72L+WjKVQ3CV3RIPUWdmlXLvcxml9h4y4vFPPExyA==
+"@shopify/koa-shopify-auth@^3.1.53":
+  version "3.1.53"
+  resolved "https://registry.yarnpkg.com/@shopify/koa-shopify-auth/-/koa-shopify-auth-3.1.53.tgz#8267c6a7fdc973526eda1c2152f0e5882f54a7f6"
+  integrity sha512-dMQmt2gz4ybYxuvI7+GSwda9TMgq0I6O1iGnU2nzXHdR01unTHvB1Sz6s7L4kWeOpW6PV6kzRyJv9TG6syRc9g==
   dependencies:
+    "@shopify/network" "^1.4.5"
+    koa-compose ">=3.0.0 <4.0.0"
     nonce "^1.0.4"
     safe-compare "^1.1.2"
     tslib "^1.9.3"
@@ -768,6 +770,13 @@
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@shopify/network/-/network-1.2.4.tgz#a347340160eda7a76629bcc94d1e55bd45a01183"
   integrity sha512-gIK1drVK9ejkGXVPB2GBwWrndH3TYnF37Lb83bjjEbCc1FWWZviIGTwzNPnP7Jv/EKUVva28yUnF9abiKJ8Vxw==
+  dependencies:
+    tslib "^1.9.3"
+
+"@shopify/network@^1.4.5":
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/@shopify/network/-/network-1.4.5.tgz#05eb23c8480db37142c392f3358ab9c98fc1c6f6"
+  integrity sha512-fB8/AewyZgdYLVkx3BZQciq6a850sDdXRX0HAmuyBUrW/m3pijNYT1SkDXfc9Ufms0EORMh1R32JgjdZQewhqA==
   dependencies:
     tslib "^1.9.3"
 
@@ -3538,7 +3547,7 @@ koa-bodyparser@^4.2.1:
     co-body "^6.0.0"
     copy-to "^2.0.1"
 
-koa-compose@^3.0.0:
+"koa-compose@>=3.0.0 <4.0.0", koa-compose@^3.0.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-3.2.1.tgz#a85ccb40b7d986d8e5a345b3a1ace8eabcf54de7"
   integrity sha1-qFzLQLfZhtjlo0Wzoazo6rz1Tec=

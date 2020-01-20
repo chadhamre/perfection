@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@shopify/koa-shopify-auth": "^3.1.22",
+    "@shopify/koa-shopify-auth": "^3.1.53",
     "@shopify/koa-shopify-graphql-proxy": "2.1.5",
     "@shopify/koa-shopify-webhooks": "^1.1.7",
     "@shopify/polaris": "^3.12.0",
