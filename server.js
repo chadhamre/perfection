@@ -29,7 +29,8 @@ app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
   server.use(logger());
-  server.use(session(server));
+  server.use(session({ sameSite: 'none', secure: true }, server));
+  server.proxy = true
   server.keys = [SHOPIFY_API_SECRET_KEY];
 
   router.get("/", processPayment);
@@ -70,7 +71,7 @@ app.prepare().then(() => {
       scopes: ["read_products", "write_products"],
       async afterAuth(ctx) {
         const { shop, accessToken } = ctx.session;
-        ctx.cookies.set("shopOrigin", shop, { httpOnly: false });
+        ctx.cookies.set("shopOrigin", shop, { httpOnly: false, sameSite: 'none', secure: true });
         const stringifiedBillingParams = JSON.stringify({
           recurring_application_charge: {
             name: "Recurring charge",
