@@ -172,27 +172,38 @@ export class Find extends Component {
     );
   }
   handleSubmit = () => {
+    const searchString = JSON.stringify(this.state.find).slice(1,-1)
+    const replaceString = JSON.stringify(this.state.replace).slice(1,-1)
+
     let filteredProducts = this.state.products.filter(
       item =>
-        JSON.stringify(item.node.descriptionHtml).indexOf(this.state.find) !==
+        JSON.stringify(item.node.descriptionHtml).indexOf(searchString) !==
         -1
     );
 
     filteredProducts.forEach(item => {
-      // console.log(item.node.descriptionHtml);
-      // console.log(JSON.stringify(item.node.descriptionHtml));
-      item.node.descriptionHtmlBeforeHighlight = item.node.descriptionHtml
-        .split(this.state.find)
-        .join(`<span class='highlight red'>${this.state.find}</span>`);
+      // stringify the description from shopify
+      const stringifiedDescription = JSON.stringify(item.node.descriptionHtml)
+      
+      // build before block with green highlighting
+      item.node.descriptionHtmlBeforeHighlight = JSON.parse(
+        stringifiedDescription
+          .split(searchString)
+          .join(`<span class='highlight red'>${searchString}</span>`))
+
+      // build after HTML for api update
       item.node.descriptionHtmlAfter = JSON.parse(
-        JSON.stringify(item.node.descriptionHtml)
-          .split(this.state.find)
-          .join(this.state.replace)
-      );
-      item.node.descriptionHtmlAfterHighlight = item.node.descriptionHtml
-        .split(this.state.find)
-        .join(`<span class='highlight green'>${this.state.replace}</span>`);
-    });
+        stringifiedDescription
+          .split(searchString)
+          .join(replaceString)
+      )
+
+      // build after block with red highlighting
+      item.node.descriptionHtmlAfterHighlight = JSON.parse(
+        stringifiedDescription
+          .split(searchString)
+          .join(`<span class='highlight green'>${replaceString}</span>`));
+    })
 
     this.setState({
       find: this.state.find,
