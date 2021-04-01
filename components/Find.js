@@ -30,6 +30,7 @@ export class Find extends Component {
   };
 
   useEffects() {
+    console.log("SET STATE", this.props.products)
     this.setState({
       products: this.props.products
     });

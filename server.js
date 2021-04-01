@@ -38,28 +38,28 @@ app.prepare().then(() => {
   server.use(async (ctx, next) => {
     // console.log("URL", ctx.request.url.split("?")[0]);
     // console.log("SEARCH", ctx.request.querystring.split("&"));
-    if (ctx.request.header.cookie) {
-      if (
-        (ctx.request.url.split("?")[0] === "/" &&
-          ctx.request.querystring.split("&") &&
-          ctx.request.querystring.split("&")[0].split("=")[0] === "hmac" &&
-          ctx.request.querystring.split("&")[1].split("=")[0] !== "locale") ||
-        (ctx.request.url.split("?")[0] === "/auth/callback" &&
-          ctx.request.querystring.split("&") &&
-          ctx.request.querystring.split("&")[1].split("=")[0] === "hmac")
-      ) {
-        {
-          console.log("DROP COOKIES", ctx.request.url);
-          ctx.request.header.cookie = ctx.request.header.cookie
-            .split(" ")
-            .filter(
-              item =>
-                ["koa:sess", "koa:sess.sig"].indexOf(item.split("=")[0]) === -1
-            )
-            .join(" ");
-        }
-      }
-    }
+    // if (ctx.request.header.cookie) {
+    //   if (
+    //     (ctx.request.url.split("?")[0] === "/" &&
+    //       ctx.request.querystring.split("&") &&
+    //       ctx.request.querystring.split("&")[0].split("=")[0] === "hmac" &&
+    //       ctx.request.querystring.split("&")[1].split("=")[0] !== "locale") ||
+    //     (ctx.request.url.split("?")[0] === "/auth/callback" &&
+    //       ctx.request.querystring.split("&") &&
+    //       ctx.request.querystring.split("&")[1].split("=")[0] === "hmac")
+    //   ) {
+    //     {
+    //       console.log("DROP COOKIES", ctx.request.url);
+    //       ctx.request.header.cookie = ctx.request.header.cookie
+    //         .split(" ")
+    //         .filter(
+    //           item =>
+    //             ["koa:sess", "koa:sess.sig"].indexOf(item.split("=")[0]) === -1
+    //         )
+    //         .join(" ");
+    //     }
+    //   }
+    // }
 
     await next();
   });
