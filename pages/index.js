@@ -60,7 +60,6 @@ class Index extends React.Component {
             <Layout.Section>
               <Query query={GET_PRODUCTS}>
                 {({ data, loading, error, fetchMore, refetch }) => {
-                  console.log("HERE", data, loading, error, fetchMore, refetch)
                   if (loading) return <Loading />;
                   if (error) {
                     console.log("ERROR", error);
