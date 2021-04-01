@@ -29,7 +29,7 @@ export class Find extends Component {
     preview: false
   };
 
-  componentWillMount() {
+  useEffects() {
     this.setState({
       products: this.props.products
     });
